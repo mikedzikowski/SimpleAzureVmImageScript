@@ -8,15 +8,15 @@ $santext2 = "exit"
 $MSILOG ="C:\Windows\MSIInstall.log"
 $Wshell = New-Object -Comobject Wscript.Shell
 
-# Verify if Powershell is running under Administrative credentials.
+# # Verify if Powershell is running under Administrative credentials.
 
-if ( -not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]"Administrator"))
-{
+# if ( -not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]"Administrator"))
+# {
 
-    Write-Host -ForegroundColor yellow "This PowerShell prompt is not elevated."
-    Write-Host -ForegroundColor yellow "Please open a new PowerShell session using an Administrative token and please try again."
-    return
-    }
+#     Write-Host -ForegroundColor yellow "This PowerShell prompt is not elevated."
+#     Write-Host -ForegroundColor yellow "Please open a new PowerShell session using an Administrative token and please try again."
+#     return
+#     }
  
 # # Creating sanpolicy file
 $santext1 | Set-Content $loc

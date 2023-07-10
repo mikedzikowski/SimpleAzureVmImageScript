@@ -198,9 +198,6 @@ Test-path -path "$env:windir\temp\WindowsAzureVmAgent.2.7.41491.1044_2201181044.
 # Setting sleep for 10 seconds
 Start-Sleep -Seconds 30 
 
-# Configuring the system to use D: as the pagefile location
-REG ADD "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management" /t REG_MULTI_SZ /v PagingFiles /d "D:\pagefile.sys 0 0" /f
-
 # Setting location to the sysprep directory
 Set-Location C:\Windows\system32\Sysprep
 

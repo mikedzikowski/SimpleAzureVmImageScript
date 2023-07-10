@@ -1,4 +1,7 @@
-﻿# Global variables
+﻿$ErrorActionPreference = 'Stop'
+
+try{
+# Global variables
 $Uri = "https://imagescripts.blob.core.usgovcloudapi.net/scripts/WindowsAzureVmAgent.2.7.41491.1044_2201181044.fre.msi" 
 $outfile = "$env:windir\temp\WindowsAzureVmAgent.2.7.41491.1044_2201181044.fre.msi"
 $loc = "$env:windir\temp\sanpolicy.txt"
@@ -35,7 +38,7 @@ netsh winhttp reset proxy
 
 # Set Coordinated Universal Time (UTC) time for Windows and the startup type of the Windows Time (w32time) service to Automatic
 
-REG ADD HKLM\SYSTEM\CurrentControlSet\Control\TimeZoneInformation /v RealTimeIsUniversal /t REG_DWORD /d 1
+REG ADD "HKLM\SYSTEM\CurrentControlSet\Control\TimeZoneInformation" /v RealTimeIsUniversal /t REG_DWORD /d 1
 
 # Set services startup to Windows default values
 
@@ -202,3 +205,7 @@ Start-Sleep -Seconds 30
 Set-Location C:\Windows\system32\Sysprep
 
 & .\sysprep.exe /oobe /generalize /shutdown /mode:vm /quiet
+}
+catch {
+   Write-Warning $Error[0]
+}

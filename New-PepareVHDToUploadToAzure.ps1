@@ -25,7 +25,7 @@ Write-Host "Moving pagefile.sys to D:\"
 Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management' -Name "PagingFiles" -Value "D:\pagefile.sys" -Type MultiString -Force
 
 Write-Host "Setting OneDrive for Business policies" Run this after you install One Drive
-Configure OneDrive to start at sign-in for all users
+# Configure OneDrive to start at sign-in for all users
 # REG ADD "HKLM\Software\Microsoft\Windows\CurrentVersion\Run" /v OneDrive /t REG_SZ /d "C:\Program Files (x86)\Microsoft OneDrive\OneDrive.exe /background" /f
 # Silently configure user accounts
 # REG ADD "HKLM\SOFTWARE\Policies\Microsoft\OneDrive" /v "SilentAccountConfig" /t REG_DWORD /d 1 /f

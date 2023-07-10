@@ -201,4 +201,4 @@ Start-Sleep -Seconds 30
 # Setting location to the sysprep directory
 Set-Location C:\Windows\system32\Sysprep
 
-& .\sysprep.exe /oobe /generalize /shutdown 
+& .\sysprep.exe /oobe /generalize /shutdown /mode:vm /quiet

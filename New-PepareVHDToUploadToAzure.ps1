@@ -8,7 +8,7 @@
 # https://docs.microsoft.com/en-us/azure/virtual-desktop/install-office-on-wvd-master-image
 
 
-Set-ExecutionPolicy -ExecutionPolicy Unrestricted
+# Set-ExecutionPolicy -ExecutionPolicy Unrestricted
 
 # Install-Module -Name PowerShellGet -Repository PSGallery -Force -ErrorAction Stop
 # Install-Module -Name Az -AllowClobber
@@ -142,12 +142,6 @@ Set-ItemProperty -Path HKLM:\Software\FSLogix\Profiles -Name "SIDDirNameMatch" -
 
 Get-AppxPackage -AllUsers Microsoft.OneDriveSync | Remove-AppxPackage -AllUsers
 
-try{
-    Remove-Item C:\Windows\System32\Sysprep\Panther -Force
-}
-catch {
-   write-host "unable to remove pather directory" 
-}
 # Launch Sysprep
 Write-Host "We'll now launch Sysprep."
 C:\Windows\System32\Sysprep\Sysprep.exe /generalize /oobe /shutdown /mode:vm

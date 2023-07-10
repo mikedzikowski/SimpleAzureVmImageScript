@@ -190,10 +190,10 @@ Invoke-WebRequest -Uri $Uri -OutFile $outfile;
 Unblock-file -path $outfile;
 
 # Validating if the file downloaded PLEASE NOTE THE FILE IS SUBJECT TO CHANGE IN THE FUTURE!!!!!
-Test-path -path "$env:windir\temp\WindowsAzureVmAgent.2.7.41491.1044_2201181044.fre.msi"
+# Test-path -path "$env:windir\temp\WindowsAzureVmAgent.2.7.41491.1044_2201181044.fre.msi"
 
-# Installing the Azure agent
-& msiexec.exe /i $outfile /qn /l* $MSILOG
+# # Installing the Azure agent
+# & msiexec.exe /i $outfile /qn /l* $MSILOG
 
 # Setting sleep for 10 seconds
 Start-Sleep -Seconds 30 

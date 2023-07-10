@@ -1,4 +1,4 @@
-# Global variables
+﻿# Global variables
 $Uri = "https://imagescripts.blob.core.usgovcloudapi.net/scripts/WindowsAzureVmAgent.2.7.41491.1044_2201181044.fre.msi" 
 $outfile = "$env:windir\temp\WindowsAzureVmAgent.2.7.41491.1044_2201181044.fre.msi"
 $loc = "$env:windir\temp\sanpolicy.txt"

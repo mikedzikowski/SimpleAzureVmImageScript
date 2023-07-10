@@ -87,7 +87,7 @@ Set-service wersvc -startmode Automatic
 
 # Update Remote Desktop registry settings
 
-REG DELETE "HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp\SSLCertificateSHA1Hash”
+REG DELETE "HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp\SSLCertificateSHA1Hash"
 
 # Keep Alives for RDP Service
 

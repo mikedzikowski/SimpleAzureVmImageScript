@@ -1,19 +1,3 @@
-<#Author   : Dean Cefola
-# Creation Date: 10/16/2018
-# Usage      : Prepare a Windows VHD or VHDX to upload to Azure
-
-#**************************************************************************
-# Date                         Version      Changes
-#------------------------------------------------------------------------
-# 10/16/2018                       1.0       Intial Version
-# 03/25/2019                       2.0       Replace with a cleaner version
-#***************************************************************************
-#>
-
-
-# Source for settings https://docs.microsoft.com/en-us/azure/virtual-machines/virtual-machines-windows-prepare-for-upload-vhd-image?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json
-
-
 # Global variables
 $Uri = "https://imagescripts.blob.core.usgovcloudapi.net/scripts/WindowsAzureVmAgent.2.7.41491.1044_2201181044.fre.msi" 
 $outfile = "$env:windir\temp\WindowsAzureVmAgent.2.7.41491.1044_2201181044.fre.msi"
@@ -25,7 +9,6 @@ $MSILOG ="C:\Windows\MSIInstall.log"
 $Wshell = New-Object -Comobject Wscript.Shell
 
 # Verify if Powershell is running under Administrative credentials.
-write-host -ForegroundColor Yellow "Validating if the command shell is running under a Administrative context"
 
 if ( -not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]"Administrator"))
 {
@@ -36,15 +19,13 @@ if ( -not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIden
     }
  
 # # Creating sanpolicy file
-# $santext1 | Set-Content $loc
-# $santext2 | Add-Content $loc 
+$santext1 | Set-Content $loc
+$santext2 | Add-Content $loc 
 
-# Write-host -ForegroundColor Yellow "Updating the SAN Policy of the C: drive"
 
-# # Setting content of file
-# diskpart /s $loc | Out-file $logloc 
+# Setting content of file
+diskpart /s $loc | Out-file $logloc 
 
-# Write-host -ForegroundColor Green "Completed! Please validate the diskpart logs located here: $logloc"
 
 # Allowing PSRemoting on the server
 Enable-PSRemoting -Force
@@ -57,8 +38,6 @@ netsh winhttp reset proxy
 REG ADD HKLM\SYSTEM\CurrentControlSet\Control\TimeZoneInformation /v RealTimeIsUniversal /t REG_DWORD /d 1
 
 # Set services startup to Windows default values
-
-Write-host -ForegroundColor Yellow "Configuring local services start mode"
 
 set-service w32time -startmode Automatic
 
@@ -106,8 +85,6 @@ Set-service RemoteRegistry -startmode Automatic
 
 Set-service wersvc -startmode Automatic
 
-Write-Host -ForegroundColor Green "Completed!"
-
 # Update Remote Desktop registry settings
 
 REG DELETE "HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp\SSLCertificateSHA1Hash”
@@ -132,7 +109,6 @@ REG ADD "HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server" /v fDenyTSConnec
 
 # Configure Windows Firewall rules for Azure Inbound
 
-Write-host -ForegroundColor Yellow "Starting to input inbound firewall rules"
 
 netsh advfirewall firewall set rule dir=in name="File and Printer Sharing (Echo Request - ICMPv4-In)" new enable=yes
 
@@ -154,21 +130,17 @@ netsh advfirewall firewall set rule dir=in name="Windows Remote Management (HTTP
 
 netsh advfirewall firewall set rule dir=in name="Windows Remote Management (HTTP-In)" new enable=yes
 
-Write-Host -ForegroundColor Green "Completed!"
 
 # Configure Windows Firewall rules for Azure Inbound and Outbound
 
-Write-host -ForegroundColor Yellow "Starting to input inbound and outbound  firewall rules"
 
 netsh advfirewall firewall set rule group="Remote Desktop" new enable=yes
 
 netsh advfirewall firewall set rule group="Core Networking" new enable=yes
 
-Write-host -ForegroundColor Green "Completed!"
 
 # Configure Windows Firewall rules for Azure outbound
 
-Write-host -ForegroundColor Yellow "Starting to configure outbound firewallrules"
 
 netsh advfirewall firewall set rule dir=out name="Network Discovery (LLMNR-UDP-Out)" new enable=yes
 
@@ -190,7 +162,6 @@ netsh advfirewall firewall set rule dir=out name="Network Discovery (WSD EventsS
 
 netsh advfirewall firewall set rule dir=out name="Network Discovery (WSD-Out)" new enable=yes
 
-Write-host -ForegroundColor Green "Completed!"
 
 # The Dump Log configuration
 
@@ -215,16 +186,13 @@ $Wshell.Run("bcdedit /set {default} bootstatuspolicy IgnoreAllFailures")
 # Source: http://go.microsoft.com/fwlink/?LinkID=394789&clcid=0x409
 # Downloading the agent
 
-Write-Host -ForegroundColor Yellow "Starting to download the Microsoft Azure agent!"
 Invoke-WebRequest -Uri $Uri -OutFile $outfile;
 Unblock-file -path $outfile;
 
 # Validating if the file downloaded PLEASE NOTE THE FILE IS SUBJECT TO CHANGE IN THE FUTURE!!!!!
 Test-path -path "$env:windir\temp\WindowsAzureVmAgent.2.7.41491.1044_2201181044.fre.msi"
-Write-Host -ForegroundColor Yellow "If you saw the word True then the file downloaded from the internet!"
 
 # Installing the Azure agent
-Write-Host -ForegroundColor Yellow "Starting sto install the Microsoft Azure Agent"
 & msiexec.exe /i $outfile /qn /l* $MSILOG
 
 # Setting sleep for 10 seconds
@@ -232,8 +200,6 @@ Start-Sleep -Seconds 30
 
 # Configuring the system to use D: as the pagefile location
 REG ADD "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management" /t REG_MULTI_SZ /v PagingFiles /d "D:\pagefile.sys 0 0" /f
-
-Write-host -ForegroundColor Yellow "Preparing to start sysprep process and the system will shut off. DO NOT INTERRUPT THE PROCESS!" 
 
 # Setting location to the sysprep directory
 Set-Location C:\Windows\system32\Sysprep
